@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov  8 11:30:56 2017
+
+@author: DG
+"""
+
 import cx_Oracle as db
 import pandas as pd
 import numpy as np
