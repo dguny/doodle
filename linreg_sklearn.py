@@ -23,23 +23,30 @@ dsn = db.makedsn(login['host'], login['port'], login['sid'])
 conn = db.connect(login['id'], login['pw'], dsn)
 
 query = "SELECT DISTINCT datatype FROM dbtable WHERE datatype IS NOT NULL ORDER BY datatype"
-cursor = conn.cursor()
-cursor.execute(query)
-result = cursor.fetchall()
-listVar = [row[0] for row in result]
+try:
+   cursor = conn.cursor()
+   cursor.execute(query)
+   result = cursor.fetchall()
+   listVar = [row[0] for row in result]
+except db.DatabaseError as dberror:
+    print(dberror)
 
 query = "SELECT column_name FROM user_tab_columns WHERE lower(table_name) = 'dbtable'"
-cursor = conn.cursor()
-cursor.execute(query)
-result = cursor.fetchall()
-listCol = [row[0] for row in result]
+try:
+   cursor.execute(query)
+   result = cursor.fetchall()
+   listCol = [row[0] for row in result]
+except db.DatabaseError as dberror:
+    print(dberror)
 
 query = "SELECT * FROM dbtable WHERE datatype IS NOT NULL ORDER BY time, datatype"
-cursor = conn.cursor()
-cursor.execute(query)
-result = cursor.fetchall()
-cursor.close()
+try:
+   cursor.execute(query)
+   result = cursor.fetchall()
+except db.DatabaseError as dberror:
+    print(dberror)
 
+cursor.close()
 conn.close()
 
 df = pd.DataFrame.from_records(result, columns=listCol)
