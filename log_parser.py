@@ -77,3 +77,4 @@ df[['g','h','i']] = df[['g','h','i']].apply(pd.to_datetime, errors='coerce')
 conn = create_engine('oracle+cx_oracle://%s:%s@%s:%i/%s' % (db_info['user'],db_info['pw'],db_info['host'],db_info['port'],db_info['sid']))
 dtypes_sql = {c:types.VARCHAR(df[c].str.len().max()) for c in df.columns[df.dtypes == 'object'].tolist()}
 df[col_save].to_sql('log_table', conn, if_exists='replace', index=False, dtype=dtypes_sql)
+conn.close()
